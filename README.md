@@ -1,3 +1,3 @@
-###reinforced-js
+##reinforced-js
 
-#Javascript's reinforcement learning library
+###Javascript's reinforcement learning library
