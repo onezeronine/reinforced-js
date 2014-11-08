@@ -1,14 +1,3 @@
-var Agent = function(parameters) 
-{
-    if(parameters != null)
-    {
-        this.alpha = parameters.alpha != null ? parameters.alpha : 0; 
-        this.gamma = parameters.gamma != null ? parameters.gamma : 0;
-    }
-    
-    
-};
-
 var Environment = function(dim) {  
     this.dimension = dim;
     this.blocks = [];

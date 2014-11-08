@@ -1,19 +1,17 @@
 (function() {
-    
-    var randomFloorInterval = function (min,max)
-    {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-    
-    var randomInterval = function (min,max)
-    {
-        return Math.random() * (max - min + 1) + min;
-    }
-    
     //Q-learning algorithm
     //Initialize Q(s,a) arbitrarily
     var dimension = 3;
     var blocks = [];
+    var episodes = 50;
+    var steps = 10;
+    var discount = 0.401;
+    var theta = 0.24;
+    var actionList = document.querySelector('#actions');
+    var canvas = document.querySelector("#canvas");
+    var context = canvas.getContext('2d');
+    var size = canvas.width / dimension;
+    
     for(var i = 0; i < dimension; ++i)
     {
         blocks.push([]);
@@ -25,8 +23,43 @@
             };
         }
     }
+    
     //set reward
-    blocks[2][1].reward = 1;
+    blocks[2][2].reward = 1;
+    
+    for(var i = 0; i < episodes; ++i)
+    {
+        //initialize s
+        var current = { x: randomFloorInterval(0,2), y: randomFloorInterval(0,2) };
+        for(var step = 0; step < steps; ++step)
+        {
+            var statePrime = current;
+            var max = getMax(statePrime);
+            
+            //take action a, observe r, s'
+            if (max == 0) 
+                statePrime.y--;
+            else if (max == 1) 
+                statePrime.x++;
+            else if (max == 2) 
+                statePrime.y++;
+            else if (max == 3) 
+                statePrime.x--;
+            
+            //print
+            var span = document.createElement('div');
+            span.innerText = (step+1).toString() + ": " + getCurrentStateText(current) + " " + getDirectionText(max);
+            actionList.appendChild(span);
+            
+            var qvalueCurrent = blocks[current.x][current.y].actions[max];
+            var maxQvaluePrime = blocks[current.x][current.y].actions[getMax(statePrime)];
+            var reward = blocks[statePrime.x][statePrime.y].reward;
+            
+            blocks[current.x][current.y].actions[max] = qvalueCurrent + theta * (reward + discount * maxQvaluePrime - qvalueCurrent);
+            
+            current = statePrime;
+        }
+    }
     
     function getValidDirection(state)
     {
@@ -51,46 +84,6 @@
         return max;
     }
     
-    var episodes = 1;
-    var steps = 100;
-    var discount = 0.401;
-    var theta = 0.24;
-    var actionList = document.querySelector('#actions');
-    for(var i = 0; i < episodes; ++i)
-    {
-        //initialize s
-        var current = { x: 1, y: 1 };
-        for(var step = 0; step < steps; ++step)
-        {
-            var statePrime = current;
-            var max = getMax(statePrime);
-            
-            //take action a, observe r, s'
-            if (max == 0) 
-                statePrime.y--;
-            else if (max == 1) 
-                statePrime.x++;
-            else if (max == 2) 
-                statePrime.y++;
-            else if (max == 3) 
-                statePrime.x--;
-            
-            //print
-            var span = document.createElement('div');
-            span.innerText = step.toString() + ": " + getCurrentStateText(current) + " " + getDirectionText(max);
-            actionList.appendChild(span);
-            
-            var qvalueCurrent = blocks[current.x][current.y].actions[max];
-            var maxQvaluePrime = blocks[current.x][current.y].actions[getMax(statePrime)];
-            var reward = blocks[statePrime.x][statePrime.y].reward;
-            
-            blocks[current.x][current.y].actions[max] = qvalueCurrent + theta * (reward + discount * maxQvaluePrime - qvalueCurrent);
-            
-            current = statePrime;
-        }
-    }
-    
-    
     
     function getCurrentStateText(state)
     {
@@ -110,10 +103,6 @@
         return "none";
     }
     
-    var canvas = document.querySelector("#canvas");
-    var context = canvas.getContext('2d');
-    
-    var size = canvas.width / dimension;
     context.strokeStyle = 'black';
     for(var row = 0, i = 0; row < canvas.width; row+=size, ++i)
     {
@@ -125,7 +114,7 @@
             context.fillText(sliceQSA(i,j,2), row+(size/2)-16, col+size-10);
             
             //east-west
-            context.fillText(sliceQSA(i,j,1), row+(size/2)+45, col+(size/2));
+            context.fillText(sliceQSA(i,j,1), row+(size/2)*1.55, col+(size/2));
             context.fillText(sliceQSA(i,j,3), row+10, col+(size/2));
             
             //reward
@@ -140,6 +129,15 @@
         return blocks[i][j].actions[direction].toString().slice(0,6);
     }
     
+    function randomFloorInterval(min,max)
+    {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    
+    function randomInterval(min,max)
+    {
+        return Math.random() * (max - min + 1) + min;
+    }
     
 }());
 
