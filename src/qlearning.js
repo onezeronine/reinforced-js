@@ -1,8 +1,6 @@
-var Environment = function(dim, discount, stepsize) {  
+var Environment = function(dim) {  
     this.dimension = dim;
     this.blocks = initialize(this.dimension);
-    this.discount = discount;
-    this.stepsize = stepsize;
     
     this.current = { x: randomFloorInterval(0,2), y: randomFloorInterval(0,2) };
     
@@ -73,9 +71,10 @@ Environment.prototype.draw = function(canvas, context) {
     };
 };
 
-Environment.prototype.step = function (steps) {
+Environment.prototype.step = function (steps, discount, stepsize) 
+{    
+    var current = { x: this.current.x, y: this.current.y };
     
-    var current = this.current;
     for(var step = 0; step < steps; ++step)
     {
         var future = { x: current.x, y: current.y };
@@ -95,12 +94,15 @@ Environment.prototype.step = function (steps) {
         var maxQvalueFuture = this.blocks[future.x][future.y].qsa[futureMax];
         var reward = this.blocks[future.x][future.y].reward;
         
-        var qsaValue = qvalueCurrent + this.stepsize * (reward + this.discount * maxQvalueFuture - qvalueCurrent);
+        var qsaValue = qvalueCurrent + stepsize * (reward + discount * maxQvalueFuture - qvalueCurrent);
         this.blocks[current.x][current.y].qsa[max] = qsaValue;
         
-        this.current.x = future.x;
-        this.current.y = future.y;
+        current.x = future.x;
+        current.y = future.y;
     }
+    
+    this.current.x = current.x;
+    this.current.y = current.y;
     
     function getMax(actions, state, dimension)
     {
