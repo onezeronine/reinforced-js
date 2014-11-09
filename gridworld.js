@@ -9,10 +9,10 @@
     
     var canvas = document.querySelector("#canvas");
     var context = canvas.getContext('2d');
-    var env = new Environment(3);
+    var agent = new Qlearning(3);
     
     var go = document.querySelector("#go");
-    env.draw(canvas,context);
+    agent.draw(canvas,context);
     
     go.onclick = function()
     {    
@@ -20,8 +20,8 @@
         var discount = parseFloat(discountDOM.value);
         var stepsize = parseFloat(stepsizeDOM.value);
     
-        env.draw(canvas,context);
-        env.step(steps, discount, stepsize);
+        agent.draw(canvas,context);
+        agent.step(steps, discount, stepsize);
     };
     
     
