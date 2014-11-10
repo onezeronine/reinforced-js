@@ -1,3 +1,5 @@
 ##reinforced-js
 
-###Javascript's reinforcement learning library
+#####Contents:
+1. Grid world example
+2. Checkers
