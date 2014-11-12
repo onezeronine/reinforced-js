@@ -1,22 +1,39 @@
 (function () {
-    var checkers = new Checkers({});
     var canvas = document.querySelector("#canvas");
     var context = canvas.getContext('2d');
+    var player = {
+        x: -1,
+        y: -1,
+        color: "none",
+        state: "none"
+    };
+    
+    var checkers = new Checkers({
+        canvas: canvas,
+        context: context
+    });
+    
     checkers.initialize();
-    checkers.draw(canvas, context);
-
-    checkers.move("red", 1, 2, 0, 3);
-    checkers.draw(canvas, context);
-
-    checkers.move("black", 0, 5, 0, 3);
-    checkers.draw(canvas, context);
-
-    checkers.move("black", 0, 5, 1, 4);
-    checkers.draw(canvas, context);
+    checkers.draw();
     
     canvas.addEventListener('click', function(e) {
-        var coords = canvas.relMouseCoords(e);
-        // console.log(coords.x + ", " + coords.y);
+        var coordinates = canvas.relMouseCoords(e);
+        var index = checkers.getBlockIndex(coordinates.x, coordinates.y);
+        if(player.state === "none"){
+            player.x = index.fromX;
+            player.y = index.fromY;
+            player.color = index.color;
+            player.state = "selected"; 
+            console.log(player.x + ", " + player.y + " = " + index.fromX + ", " + index.fromY);
+        }
+        else if(player.state === "selected"){
+            checkers.move(player.color, player.x, player.y, index.fromX, index.fromY);
+            checkers.draw();
+            player.x = -1;
+            player.y = -1;
+            player.color = "none";
+            player.state = "none";
+        }
     });
     
     HTMLCanvasElement.prototype.relMouseCoords = function (event){
