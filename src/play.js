@@ -7,16 +7,22 @@
         color: "none",
         state: "none"
     };
-    
     var checkers = new Checkers({
         canvas: canvas,
         context: context
     });
+    var history = $("#history");
     
     checkers.initialize();
     checkers.draw();
     
-    canvas.addEventListener('click', function(e) {
+    var post = function (index) 
+    {
+        var value = player.state + ": (" +  index.fromX + "," + index.fromY + ")";
+        history.append($("<div>").text(value));
+    }
+    
+    var canvasOnClick = function (e) {
         var coordinates = canvas.relMouseCoords(e);
         var index = checkers.getBlockIndex(coordinates.x, coordinates.y);
         if(player.state === "none"){
@@ -24,7 +30,7 @@
             player.y = index.fromY;
             player.color = index.color;
             player.state = "selected"; 
-            console.log(player.x + ", " + player.y + " = " + index.fromX + ", " + index.fromY);
+            post(index);
         }
         else if(player.state === "selected"){
             checkers.move(player.color, player.x, player.y, index.fromX, index.fromY);
@@ -33,8 +39,11 @@
             player.y = -1;
             player.color = "none";
             player.state = "none";
+            post(index);
         }
-    });
+    }
+    canvas.addEventListener('click', canvasOnClick);
+    
     
     HTMLCanvasElement.prototype.relMouseCoords = function (event){
         var totalOffsetX = 0;
