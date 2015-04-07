@@ -3,10 +3,13 @@ var Checkers = function (options) {
     this.dimension = 8;
     this.canvas = options.canvas || {};
     this.context = options.context || {};
+    this.state = {
+        turn: ""
+    };
 }
 
 Checkers.prototype = {
-    initialize: function () {
+    initialize: function (first) {
         this.blocks = [];
         for (var i = 0; i < this.dimension; ++i) {
             this.blocks.push([]);
@@ -25,15 +28,16 @@ Checkers.prototype = {
                 }
             }
         }
+        this.state.turn = first;
     },
 
     draw: function () {
         var width = this.canvas.width,
             height = this.canvas.height
-            context = this.context,
+        context = this.context,
             size = width / this.dimension,
             blks = this.blocks;
-        
+
         context.clearRect(0, 0, width, height);
 
         for (var row = 0, i = 0; row < width; row += size, ++i) {
@@ -67,24 +71,24 @@ Checkers.prototype = {
         }
         blackPiece.src = "contents/black.gif";
     },
-    
-    getBlockIndex: function (x, y){
-        var size = this.canvas.width / this.dimension;
-        var fromX = 0,
+
+    getIndexFromCoordinates: function (x, y) {
+        var size = this.canvas.width / this.dimension,
+            fromX = 0,
             fromY = 0;
-        
-        for(var i = 0; i < this.dimension; ++i) {
-            if((size * i + 1) < x) fromX += 1;    
-            if((size * i + 1) < y) fromY += 1;
+
+        for (var i = 0; i < this.dimension; ++i) {
+            var compare = size * (i + 1);
+            if (compare < x) fromX += 1;
+            if (compare < y) fromY += 1;
         }
-        
-        return { fromX: fromX - 1, fromY: fromY - 1, color: this.blocks[fromX][fromY].state }
+        return { fromX: fromX, fromY: fromY, color: this.blocks[fromX][fromY].state }
     },
-    
+
     select: function (color, fromX, fromY) {
-    
+
     },
-    
+
     move: function (color, fromX, fromY, destX, destY) {
         var isValid = isMoveValid(this.blocks, {
             color: color,
