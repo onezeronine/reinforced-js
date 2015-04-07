@@ -1,10 +1,9 @@
 ##reinforced-js
 
-###Examples of reinforcement algorithms
+JS Examples of reinforcement algorithms in action
 
-####Contents:
 1. Grid world example using Q-learning
-    - Url: localhost:1337/gridworld
+Url: localhost:1337/gridworld
 
 2. Checkers - unfinished
 
