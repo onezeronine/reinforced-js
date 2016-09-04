@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Checkers">
+    <meta name="author" content="Kenneth Bastian">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/stylesheets/site.css">
+    <title>Grid</title>
+  </head>
+  <body>
+    <div>
+      <h1>Q-learning Grid</h1>
+      <form id="display">
+        <div class="form-group">
+          <label>Dimensions</label>
+          <input id="dimension" type="text" value="5" readonly />
+        </div>
+        <div class="form-group">
+          <label>Reward position</label>
+          <input id="x" type="text" value="2" required />
+          <input id="y" type="text" value="3" required />
+        </div>
+        <div class="form-group">
+          <button type="submit">Display</button>
+        </div>
+      </form>
+
+      <div class="grid"></div>
+
+      <form id="run" style="display: none;">
+        <div class="form-group">
+          <label>Steps, Discount, Alpha</label>
+          <div>
+            <input id="step" type="text" value="1" required />
+            <input id="discount" type="text" value="0.35" required />
+            <input id="alpha" type="text" value="0.2" required />
+          </div>
+          <div class="form-group">
+            <button type="submit">Run</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <script src="/libraries/jquery/dist/jquery.min.js"></script>
+    <script src="/scripts/qlearning.js"></script>
+    <script src="/scripts/simulate.js"></script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "preset": "google",
+
+  "disallowArrowFunctions": true,
+  "disallowDanglingUnderscores": null,
+  "disallowEmptyBlocks": true,
+  "disallowMultipleLineStrings": null,
+  "disallowMultipleVarDecl": true,
+  "disallowTrailingWhitespace": null,
+  "disallowQuotedKeysInObjects": null,
+  "disallowSpacesInsideObjectBrackets": false,
+
+  "excludeFiles": ["node_modules/**", "./**/*.conf.js"],
+
+  "maximumLineLength": {
+    "value": 120,
+    "allExcept": ["comments", "regex"]
+  },
+  "requireCurlyBraces": [
+    "if",
+    "else",
+    "for",
+    "while",
+    "do",
+    "try",
+    "catch"
+  ],
+  "requireSpaceAfterKeywords": [
+    "if",
+    "else",
+    "for",
+    "while",
+    "do",
+    "switch",
+    "return",
+    "try",
+    "catch"
+  ],
+
+  "requireCapitalizedConstructors": true,
+  "requireDotNotation": null,
+  "requireSemicolons": true,
+  "requireCamelCaseOrUpperCaseIdentifiers": true,
+  "requireOperatorBeforeLineBreak": true,
+  "requirePaddingNewLinesAfterBlocks": null,
+  "requireSpaceAfterKeywords": null,
+  "requireTrailingComma": null,
+
+  "safeContextKeyword": ["self"],
+
+  "validateIndentation": 2,
+  "validateQuoteMarks": "'",
+  "validateLineBreaks": null
+}

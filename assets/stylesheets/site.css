@@ -1,0 +1,45 @@
+body {
+  font-size: 1.2em;
+}
+:after, :before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.form-group {
+  margin: 5px 0;
+}
+.column {
+  float: left;
+  position: relative;
+  width: 10%;
+  min-height: 70px;
+  border: 1px solid #9e9e9e;
+}
+.inner-col-2 {
+  text-align: center;
+  float: left;
+  position: relative;
+  width: 50%;
+  border: 1px solid #e0e0e0;
+}
+.inner-col-1 {
+  text-align: center;
+  position: relative;
+  width: 100%;
+  border: 1px solid #e0e0e0;
+}
+.grid {
+  width: 100%;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
