@@ -46,8 +46,8 @@ $(function(document) {
     north.append(renderDirections(1, qsa[0]));
 
     var mid = $('<div class="row">');
-    mid.append(renderDirections(2, qsa[1]));
     mid.append(renderDirections(2, qsa[3]));
+    mid.append(renderDirections(2, qsa[1]));
 
     var south = $('<div class="row">');
     south.append(renderDirections(1, qsa[2]));
@@ -64,9 +64,9 @@ $(function(document) {
   $('#run').on('submit', function(e) {
     e.preventDefault();
     var form = $(this);
-    var steps = Number.parseInt(form.find('#step').val());
-    var discount = Number.parseInt(form.find('#discount').val());
-    var alpha = Number.parseInt(form.find('#alpha').val());
+    var steps = parseInt(form.find('#step').val()) || 1;
+    var discount = parseFloat(form.find('#discount').val()) || 0.35;
+    var alpha = parseFloat(form.find('#alpha').val()) || 0.2;
     for(var i = 0; i < steps; ++i) {
       agent.step(1, discount, alpha);
     }

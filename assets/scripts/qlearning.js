@@ -5,12 +5,14 @@ $(function(document) {
     this.current = { x: randomFloorInterval(0, dim - 1), y: randomFloorInterval(0, dim - 1) };
   };
 
-  Qlearning.prototype.getMax = function(actions, state) {
+  Qlearning.prototype.getMax = function(state) {
     var directions = this.getValidDirection(state, this.dimension);
     var max = directions[0];
+    var actions = this.blocks[state.x][state.y];
     for(var i = 1; i < directions.length; ++i) {
-      if(actions.qsa[directions[i]] > actions.qsa[max]) {
-        max = directions[i];
+      var currentDirection = directions[i];
+      if(actions.qsa[currentDirection] > actions.qsa[max]) {
+        max = currentDirection;
       }
     }
     return max;
@@ -18,10 +20,11 @@ $(function(document) {
 
   Qlearning.prototype.getValidDirection = function(state, dimension) {
     var directions = [];
-    if(state.y > 0) { directions.push(0); }
+    if(state.x > 0) { directions.push(0); } // y === 0 then not north
     if(state.x < dimension - 1) { directions.push(2); }
     if(state.y < dimension - 1) { directions.push(1); }
-    if(state.x > 0) { directions.push(3); }
+    if(state.y > 0) { directions.push(3); }
+
     return directions;
   };
 
@@ -39,21 +42,21 @@ $(function(document) {
 
   Qlearning.prototype.step = function(step, discount, stepsize) {
     var current = { x: this.current.x, y: this.current.y };
-    var max = this.getMax(this.blocks[current.x][current.y], current);
+    var max = this.getMax(current);
 
     var future = { x: current.x, y: current.y };
     if(max === 0) {
-      future.y--;
-    } else if(max === 1) {
-      future.x++;
-    } else if(max === 2) {
-      future.y++;
-    } else if(max === 3) {
       future.x--;
+    } else if(max === 1) {
+      future.y++;
+    } else if(max === 2) {
+      future.x++;
+    } else if(max === 3) {
+      future.y--;
     }
 
     var qvalueCurrent = this.blocks[current.x][current.y].qsa[max];
-    var futureMax = this.getMax(this.blocks[future.x][future.y], future);
+    var futureMax = this.getMax(future);
     var maxQvalueFuture = this.blocks[future.x][future.y].qsa[futureMax];
     var reward = this.blocks[future.x][future.y].reward;
 
